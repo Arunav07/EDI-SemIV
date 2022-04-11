@@ -1,0 +1,7 @@
+{
+    "deployment_type": "node",
+    "port_number": 5000,
+    "file_name": "server.js",
+    "server_name": "API_folder",
+    "server_alias": ""
+}
