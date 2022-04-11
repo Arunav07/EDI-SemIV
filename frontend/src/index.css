@@ -20,8 +20,9 @@ li {
 a {
   text-decoration: none;
 }
-*:focus {
-  outline: 1px solid #009688;
+IMG{
+  max-width: 90vw;
+  margin: auto;
 }
 ::-moz-selection {
   /* Code for Firefox */
@@ -228,3 +229,6 @@ footer {
   text-align: center;
 }
 /* Design of Admin page ends here. */
+.login{
+  padding:10ch 5ch; 
+}
