@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  Button,
-  FormControl,
-  Grid,
-  MenuItem,
-  TextField,
-} from "@mui/material";
+import { Button, FormControl, Grid, MenuItem, TextField } from "@mui/material";
 import { loaderGIF, loginGIF } from "../../assets/lottieAnimations";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import {ToastContainer} from "react-toastify"
+import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useStyles from "../../styles";
+import { Link } from "@material-ui/core";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-const navigate = useNavigate()
-  useEffect(()=>{
-    setShowPassword(!showPassword)
-  },[])
+  const navigate = useNavigate();
+  useEffect(() => {
+    setShowPassword(!showPassword);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +32,7 @@ const navigate = useNavigate()
       console.log(values);
       localStorage.setItem("user", JSON.stringify(values));
       const user = JSON.parse(localStorage.getItem("user"));
-      user.loginType==="S"?navigate("/students"):navigate("/teachers")
+      user.loginType === "S" ? navigate("/students") : navigate("/teachers");
     },
   });
 
@@ -45,107 +40,115 @@ const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
 
   const helloHandler = () => {
-    setLoading(true)
+    setLoading(true);
     setTimeout(() => {
-    setLoading(false)
-    setShow(!show);
-    }, 3000)
-
+      setLoading(false);
+      setShow(!show);
+    }, 1000);
   };
-  useEffect(()=>{
-    helloHandler()
-  },[])
+  useEffect(() => {
+    helloHandler();
+  }, []);
   const classes = useStyles();
   return (
     <>
-    <ToastContainer autoClose={2000} />
-        {loading? <img style={{width: "50%", transform: "translateX(50%)"}} src={loaderGIF} alt="loadingGIF" /> : <div className="login">
-        <Grid container sx={{ width: "100%" }} spacing={3}>
-          <Grid item xs={10} md={6}>
-            <img src={loginGIF} alt="login GIF" />
-          </Grid>
-          <Grid item xs={10} md={6}>
-            <FormControl fullWidth onSubmit={formik.handleSubmit}>
-              <Grid container spacing={3}>
-                <Grid item xs={8}>
-                  <TextField
-                    label="Email"
-                    name="email"
-                    sx={{ width: "100%" }}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email}
-                  />
-                  {formik.touched.email && formik.errors.email ? (
-                    <div style={{color: "red"}}>{formik.errors.email}</div>
-                  ) : null}
-                </Grid>
-                <Grid item xs={8} className={classes.passwordField}>
-                  <TextField
-                    label="Password"
-                    name="password"
-                    type={showPassword ?"password": "text" }
-                    onChange={formik.handleChange}
-                    sx={{ width: "100%" }}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.password && formik.errors.password}
-                    value={formik.values.password}
-                 />
-                    
-                  {formik.touched.password && formik.errors.password ? (
-                    <div style={{color: "red"}}>{formik.errors.password}</div>
-                  ) : null}
+      <ToastContainer autoClose={2000} />
+      {loading ? (
+        <img
+          style={{ width: "50%", transform: "translateX(50%)" }}
+          src={loaderGIF}
+          alt="loadingGIF"
+        />
+      ) : (
+        <div className="login">
+          <Grid container sx={{ width: "100%" }} spacing={3}>
+            <Grid item xs={10} md={6}>
+              <img src={loginGIF} alt="login GIF" />
+            </Grid>
+            <Grid item xs={10} md={6}>
+              <FormControl fullWidth onSubmit={formik.handleSubmit}>
+                <Grid container spacing={3}>
+                  <Grid item xs={8}>
+                    <TextField
+                      label="Email"
+                      name="email"
+                      sx={{ width: "100%" }}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.email}
+                    />
+                    {formik.touched.email && formik.errors.email ? (
+                      <div style={{ color: "red" }}>{formik.errors.email}</div>
+                    ) : null}
+                  </Grid>
+                  <Grid item xs={8} className={classes.passwordField}>
+                    <TextField
+                      label="Password"
+                      name="password"
+                      type={showPassword ? "password" : "text"}
+                      onChange={formik.handleChange}
+                      sx={{ width: "100%" }}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.password && formik.errors.password}
+                      value={formik.values.password}
+                    />
+
+                    {formik.touched.password && formik.errors.password ? (
+                      <div style={{ color: "red" }}>
+                        {formik.errors.password}
+                      </div>
+                    ) : null}
                     {showPassword ? (
                       <RemoveRedEyeIcon
                         className={classes.eyeIcon}
-                        onClick={() =>
-                          setShowPassword(!showPassword)
-                        }
+                        onClick={() => setShowPassword(!showPassword)}
                       />
                     ) : (
                       <VisibilityOffIcon
-                      className={classes.eyeIcon}
-                      onClick={() =>
-                        setShowPassword(!showPassword)
-                      }
+                        className={classes.eyeIcon}
+                        onClick={() => setShowPassword(!showPassword)}
                       />
                     )}
+                  </Grid>
+                  <Grid item xs={8}>
+                    <TextField
+                      id="loginType"
+                      name="loginType"
+                      value={formik.values.loginType}
+                      label="Login Type"
+                      sx={{ width: "100%" }}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      select
+                      error={
+                        !!formik.errors.loginType && !!formik.touched.loginType
+                      }
+                    >
+                      <MenuItem value={"S"}>Students</MenuItem>
+                      <MenuItem value={"T"}>Teachers</MenuItem>
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <Button
+                      type="submit"
+                      disabled={formik.isSubmitting}
+                      variant="contained"
+                      color="primary"
+                      onClick={formik.handleSubmit}
+                    >
+                      Login
+                    </Button>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <Link href="/forgotPassword">Forgot Password?</Link>
+                  </Grid>
                 </Grid>
-                <Grid item xs={8}>
-                  <TextField
-                    id="loginType"
-                    name="loginType"
-                    value={formik.values.loginType}
-                    label="Login Type"
-                    sx={{ width: "100%" }}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    select
-                    error={
-                      !!formik.errors.loginType && !!formik.touched.loginType
-                    }
-                  >
-                    <MenuItem value={"S"}>Students</MenuItem>
-                    <MenuItem value={"T"}>Teachers</MenuItem>
-                  </TextField>
-                </Grid>
-                <Grid item xs={7}>
-                  <Button
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                    variant="contained"
-                    color="primary"
-                    onClick={formik.handleSubmit}
-                  >
-                    Login
-                  </Button>
-                </Grid>
-              </Grid>
-            </FormControl>
+              </FormControl>
+              <Link className={classes.bottomText} href="/register">Don't have an account? Register here</Link>
+            </Grid>
           </Grid>
-        </Grid>
-      </div>}
-      
+        </div>
+      )}
     </>
   );
 }

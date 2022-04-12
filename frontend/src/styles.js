@@ -8,6 +8,9 @@ eyeIcon: {
     position: "absolute",
     right: "10px",
     top: "50%",
+},
+bottomText: {
+    marginTop: "10%",
 }
 }));
 
