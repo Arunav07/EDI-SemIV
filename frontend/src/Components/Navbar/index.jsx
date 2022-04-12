@@ -6,6 +6,7 @@ import { Students, Teachers } from "../../Pages";
 import { useNavigate } from "react-router-dom";
 import SchoolIcon from "@mui/icons-material/School";
 import { SvgIcon, Typography, Button, Menu, MenuItem } from "@mui/material";
+import PersonIcon from '@mui/icons-material/Person';
 
 function HomeIcon(props) {
   return (
@@ -27,7 +28,11 @@ const Index = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+const user = JSON.parse(localStorage.getItem("user"));
+let userID = ""
+if(user!==null){
+ userID = user
+}
   return (
     <nav>
       <BottomNavigation
@@ -75,9 +80,8 @@ const Index = () => {
           onClick={handleClick}
           style={{justifySelf: "flex-end"}}
         >
-          
-          <img src="" alt="" />
-          <Typography variant="body3">John Doe</Typography>
+         {userID.profilePicture ||  <PersonIcon />}
+          <Typography variant="body3">{userID.email || "John Doe"}</Typography>
         </Button>
       </BottomNavigation>
 
@@ -106,7 +110,8 @@ const Index = () => {
         >
           My account
         </MenuItem>
-        <MenuItem
+        {userID? (
+          <MenuItem
           onClick={() => {
            localStorage.removeItem("user");
             navigate("/login");
@@ -114,6 +119,15 @@ const Index = () => {
         >
           Logout
         </MenuItem>
+        ): (
+          <MenuItem
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
+          Login
+        </MenuItem>
+        )}
       </Menu>
     </nav>
   );

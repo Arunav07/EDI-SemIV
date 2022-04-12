@@ -11,7 +11,17 @@ eyeIcon: {
 },
 bottomText: {
     marginTop: "10%",
-}
+},
+profileImage: {
+width: "80px",
+height: "80px",
+borderRadius: "50%",
+},
+profileImageInput: {
+    display: "flex",
+    border: "1px solid #C4C4C4 !important",
+    alignItems: "center"
+  },
 }));
 
 export default useStyles;

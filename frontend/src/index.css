@@ -231,6 +231,10 @@ footer {
   text-align: center;
 }
 /* Design of Admin page ends here. */
-.login{
+.login, .register{
   padding:10ch 5ch; 
+}
+
+img{
+  max-width: 600px
 }

@@ -5,10 +5,10 @@ import { Button, FormControl, Grid, MenuItem, TextField } from "@mui/material";
 import { loaderGIF, loginGIF } from "../../assets/lottieAnimations";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useStyles from "../../styles";
-import { Link } from "@material-ui/core";
+import { Link, Typography } from "@material-ui/core";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,6 +30,15 @@ export default function Login() {
     }),
     onSubmit: (values) => {
       console.log(values);
+      toast.success("Successfully Registered", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       localStorage.setItem("user", JSON.stringify(values));
       const user = JSON.parse(localStorage.getItem("user"));
       user.loginType === "S" ? navigate("/students") : navigate("/teachers");
@@ -50,9 +59,12 @@ export default function Login() {
     helloHandler();
   }, []);
   const classes = useStyles();
+  const user = JSON.parse(localStorage.getItem("user"));
+  if(user!==null){
+    user.loginType === "S" ? navigate("/students") : navigate("/teachers");
+  }
   return (
     <>
-      <ToastContainer autoClose={2000} />
       {loading ? (
         <img
           style={{ width: "50%", transform: "translateX(50%)" }}
@@ -76,6 +88,7 @@ export default function Login() {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.email}
+                      error={formik.touched.email && formik.errors.email}
                     />
                     {formik.touched.email && formik.errors.email ? (
                       <div style={{ color: "red" }}>{formik.errors.email}</div>
@@ -120,9 +133,7 @@ export default function Login() {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       select
-                      error={
-                        !!formik.errors.loginType && !!formik.touched.loginType
-                      }
+                      error={formik.errors.loginType &&formik.touched.loginType}
                     >
                       <MenuItem value={"S"}>Students</MenuItem>
                       <MenuItem value={"T"}>Teachers</MenuItem>
@@ -144,7 +155,9 @@ export default function Login() {
                   </Grid>
                 </Grid>
               </FormControl>
-              <Link className={classes.bottomText} href="/register">Don't have an account? Register here</Link>
+              <Button variant="text" onClick={()=>{navigate("/register")}}>
+              <Typography className={classes.bottomText}>Don't have an account? Register here</Typography>
+              </Button>
             </Grid>
           </Grid>
         </div>
