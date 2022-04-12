@@ -13,6 +13,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import {ToastContainer} from "react-toastify"
 import { useNavigate } from "react-router-dom";
+import useStyles from "../../styles";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,10 +41,25 @@ const navigate = useNavigate()
     },
   });
 
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const helloHandler = () => {
+    setLoading(true)
+    setTimeout(() => {
+    setLoading(false)
+    setShow(!show);
+    }, 3000)
+
+  };
+  useEffect(()=>{
+    helloHandler()
+  },[])
+  const classes = useStyles();
   return (
     <>
     <ToastContainer autoClose={2000} />
-      <div className="login">
+        {loading? <img style={{width: "50%", transform: "translateX(50%)"}} src={loaderGIF} alt="loadingGIF" /> : <div className="login">
         <Grid container sx={{ width: "100%" }} spacing={3}>
           <Grid item xs={10} md={6}>
             <img src={loginGIF} alt="login GIF" />
@@ -51,10 +67,11 @@ const navigate = useNavigate()
           <Grid item xs={10} md={6}>
             <FormControl fullWidth onSubmit={formik.handleSubmit}>
               <Grid container spacing={3}>
-                <Grid item xs={7}>
+                <Grid item xs={8}>
                   <TextField
                     label="Email"
                     name="email"
+                    sx={{ width: "100%" }}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.email}
@@ -63,50 +80,38 @@ const navigate = useNavigate()
                     <div style={{color: "red"}}>{formik.errors.email}</div>
                   ) : null}
                 </Grid>
-                <Grid item xs={7}>
+                <Grid item xs={8} className={classes.passwordField}>
                   <TextField
                     label="Password"
                     name="password"
                     type={showPassword ?"password": "text" }
                     onChange={formik.handleChange}
+                    sx={{ width: "100%" }}
                     onBlur={formik.handleBlur}
+                    error={formik.touched.password && formik.errors.password}
                     value={formik.values.password}
-                  >
-                     {showPassword ? (
-                      <RemoveRedEyeIcon
-                        onClick={() =>
-                          setShowPassword(!showPassword)
-                        }
-                      />
-                    ) : (
-                      <VisibilityOffIcon
-                      onClick={() =>
-                        setShowPassword(!showPassword)
-                      }
-                      />
-                    )}
-                  </TextField>
+                 />
+                    
                   {formik.touched.password && formik.errors.password ? (
                     <div style={{color: "red"}}>{formik.errors.password}</div>
                   ) : null}
-                  <div
-                  >
                     {showPassword ? (
                       <RemoveRedEyeIcon
+                        className={classes.eyeIcon}
                         onClick={() =>
                           setShowPassword(!showPassword)
                         }
                       />
                     ) : (
                       <VisibilityOffIcon
+                      className={classes.eyeIcon}
                       onClick={() =>
                         setShowPassword(!showPassword)
                       }
                       />
                     )}
-                  </div>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={8}>
                   <TextField
                     id="loginType"
                     name="loginType"
@@ -139,7 +144,8 @@ const navigate = useNavigate()
             </FormControl>
           </Grid>
         </Grid>
-      </div>
+      </div>}
+      
     </>
   );
 }

@@ -1,13 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import Router from './router';
-import { StyledEngineProvider } from '@mui/material/styles';
 
-ReactDOM.createRoot(document.querySelector("#root")).render(
-  <StyledEngineProvider injectFirst>
-   <Router />
-  </StyledEngineProvider>
+ReactDOM.render(
+  <React.StrictMode>
+      <Router />
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
